@@ -1,9 +1,8 @@
 package com.func;
 
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.Random;
+import java.util.function.*;
 
 public class Functional03 {
     public static void main(String[] args) {
@@ -28,6 +27,21 @@ public class Functional03 {
             }
         };
 
+        Function<Integer, String> stringOutputFunction = new Function<Integer, String>() {
+            @Override
+            public String apply(Integer integer) {
+                return " "+integer;
+            }
+        };
+
+        BinaryOperator<Integer> sumBinaryOperatorImpl = new BinaryOperator<Integer>() {
+            @Override
+            public Integer apply(Integer baseNumber, Integer additiveNumber) {
+                return baseNumber + additiveNumber;
+            }
+        };
+
+
         Consumer<Integer> consumer = new Consumer<Integer>() {
             @Override
             public void accept(Integer number) {
@@ -35,9 +49,41 @@ public class Functional03 {
             }
         };
 
-        numbers.stream()
+        Supplier<Integer> randomIntSupplier = new Supplier<Integer>() {
+            @Override
+            public Integer get() {
+                Random rand = new Random();
+
+                return rand.nextInt(100);
+            }
+        };
+
+        UnaryOperator<Integer> unaryDoublingOperator = new UnaryOperator<Integer>() {
+            @Override
+            public Integer apply(Integer o) {
+                return o*2;
+            }
+        };
+
+        int sumOfEvenSquares = numbers.stream()
                 .filter(predicate)
                 .map(function)
-                .forEach(consumer);
+                .map(unaryDoublingOperator)
+                .reduce(sumBinaryOperatorImpl)
+                .stream().findFirst().get();
+
+        System.out.println(sumOfEvenSquares);
+        System.out.println(randomIntSupplier.get());
+
+        BiPredicate<Integer,String> testStringIntegerEquivalent = (x,y) -> {
+          return x == Integer.parseInt(y);
+        };
+        System.out.println(testStringIntegerEquivalent.test(2,"3"));
+
+        BiFunction<Integer, String, String> appenderBiFunction = (x,y) -> x+y;
+        System.out.println(appenderBiFunction.apply(2,"342"));
+
+        BiConsumer<Integer,String> biConsumerPrinter = (x,y) -> System.out.println(x+"----"+y);
+        biConsumerPrinter.accept(2,"342");
     }
 }
