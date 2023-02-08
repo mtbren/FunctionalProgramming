@@ -12,8 +12,7 @@ public class MethodReferences01 {
         List<String> courses = List.of("Spring", "Spring Boot", "API", "MicroServices", "AWS", "PCF",
                 "Azure", "Docker", "Kubernetes");
 
-        /*courses.stream()
-                .map(str->str.toUpperCase())
+        /*courses.stream().map(str->str.toUpperCase())
                 .forEach(str -> System.out.println(str));*/
 
         courses.stream()
