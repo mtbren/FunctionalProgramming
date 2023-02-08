@@ -1,6 +1,8 @@
 package com.custom;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Course{
     private String name;
@@ -90,6 +92,41 @@ public class FPCustom {
                 .anyMatch(course -> course.getReviewScore() > 95)); // true
         System.out.println(courses.stream()
                 .anyMatch(course -> course.getNoOfStudents() > 50000)); // false
+
+        /*courses.stream()
+                .sorted((c1, c2) -> c1.getName().compareTo(c2.getName()))
+                .forEach(System.out::println);*/
+
+        Comparator<Course> reviewScoreComparator = Comparator.comparingInt(Course::getReviewScore);
+        Comparator<Course> noOfStudentsComparatorIncreasing = new Comparator<Course>() {
+            @Override
+            public int compare(Course c1, Course c2) {
+                return Integer.compare(c1.getNoOfStudents(), c2.getNoOfStudents());
+            }
+        };
+
+        Comparator<Course> noOfStudentsComparatorDecreasing = Comparator.comparingInt(Course::getNoOfStudents).reversed();
+        /*courses.stream()
+                .sorted(noOfStudentsComparator)
+                .forEach(System.out::println);*/
+
+        /*courses.stream()
+                .sorted(reviewScoreComparator)
+                .forEach(System.out::println);*/
+
+        System.out.println(
+                courses.stream()
+                        .sorted(noOfStudentsComparatorDecreasing)
+                        .collect(Collectors.toList()));
+
+        Comparator<Course> noOfStudentsReviewScoreComparator =
+                Comparator.comparingInt(Course::getNoOfStudents).thenComparingInt(Course::getReviewScore).reversed();
+
+        System.out.println(
+                courses.stream()
+                        .sorted(noOfStudentsReviewScoreComparator)
+                        .collect(Collectors.toList()));
+
 
     }
 }
