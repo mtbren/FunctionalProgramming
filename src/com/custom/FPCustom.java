@@ -128,5 +128,37 @@ public class FPCustom {
                         .collect(Collectors.toList()));
 
 
+        // Take only 5
+        System.out.println(
+                courses.stream().limit(5).collect(Collectors.toList())
+        );
+
+        // Skip top 5
+        System.out.println(
+                courses.stream().skip(5).collect(Collectors.toList())
+        );
+
+        // Skip top 5 and get 2
+        System.out.println(
+                courses.stream()
+                        .skip(5)
+                        .limit(2)
+                        .collect(Collectors.toList())
+        );
+
+        // Get all courses sorted by ReviewScore desc until you find a score < 95
+        System.out.println(
+                courses.stream()
+                        .sorted(Comparator.comparing(Course::getReviewScore).reversed())
+                        .takeWhile(course -> course.getReviewScore()>95)
+                        .collect(Collectors.toList())
+        );
+
+        // Take a list of courses and display them only after you get the first element with noOfStudents = 21000
+        System.out.println(
+                courses.stream()
+                        .dropWhile(course -> course.getNoOfStudents()!=21000)
+                        .collect(Collectors.toList())
+        );
     }
 }
