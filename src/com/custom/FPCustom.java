@@ -2,6 +2,7 @@ package com.custom;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 class Course{
@@ -75,7 +76,7 @@ public class FPCustom {
         );
 
         // allMatch checks whether all the stream elements satisfy a condition
-        System.out.println(courses.stream()
+        /*System.out.println(courses.stream()
                 .allMatch(course -> course.getReviewScore()>95)); // false
         System.out.println(courses.stream()
                 .allMatch(course -> course.getNoOfStudents()>10000)); // true
@@ -91,13 +92,13 @@ public class FPCustom {
         System.out.println(courses.stream()
                 .anyMatch(course -> course.getReviewScore() > 95)); // true
         System.out.println(courses.stream()
-                .anyMatch(course -> course.getNoOfStudents() > 50000)); // false
+                .anyMatch(course -> course.getNoOfStudents() > 50000)); // false*/
 
         /*courses.stream()
                 .sorted((c1, c2) -> c1.getName().compareTo(c2.getName()))
                 .forEach(System.out::println);*/
 
-        Comparator<Course> reviewScoreComparator = Comparator.comparingInt(Course::getReviewScore);
+       /* Comparator<Course> reviewScoreComparator = Comparator.comparingInt(Course::getReviewScore);
         Comparator<Course> noOfStudentsComparatorIncreasing = new Comparator<Course>() {
             @Override
             public int compare(Course c1, Course c2) {
@@ -105,7 +106,7 @@ public class FPCustom {
             }
         };
 
-        Comparator<Course> noOfStudentsComparatorDecreasing = Comparator.comparingInt(Course::getNoOfStudents).reversed();
+        Comparator<Course> noOfStudentsComparatorDecreasing = Comparator.comparingInt(Course::getNoOfStudents).reversed();*/
         /*courses.stream()
                 .sorted(noOfStudentsComparator)
                 .forEach(System.out::println);*/
@@ -114,7 +115,7 @@ public class FPCustom {
                 .sorted(reviewScoreComparator)
                 .forEach(System.out::println);*/
 
-        System.out.println(
+        /*System.out.println(
                 courses.stream()
                         .sorted(noOfStudentsComparatorDecreasing)
                         .collect(Collectors.toList()));
@@ -131,10 +132,10 @@ public class FPCustom {
         // Take only 5
         System.out.println(
                 courses.stream().limit(5).collect(Collectors.toList())
-        );
+        );*/
 
         // Skip top 5
-        System.out.println(
+        /*System.out.println(
                 courses.stream().skip(5).collect(Collectors.toList())
         );
 
@@ -159,6 +160,16 @@ public class FPCustom {
                 courses.stream()
                         .dropWhile(course -> course.getNoOfStudents()!=21000)
                         .collect(Collectors.toList())
-        );
+        );*/
+
+        // Get the course that has max number of students
+        System.out.println(courses.stream().max(Comparator.comparing(Course::getNoOfStudents)).orElse(null));
+        // Get the course that has min number of students
+        System.out.println(courses.stream().min(Comparator.comparing(Course::getNoOfStudents)).orElse(null));
+
+        Predicate<Course> pred = (course) -> course.getReviewScore()>90;
+        System.out.println(courses.stream().filter(pred).findFirst().orElse(null));
+
+
     }
 }
