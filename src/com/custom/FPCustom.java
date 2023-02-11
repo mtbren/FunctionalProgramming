@@ -2,6 +2,8 @@ package com.custom;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -163,13 +165,89 @@ public class FPCustom {
         );*/
 
         // Get the course that has max number of students
-        System.out.println(courses.stream().max(Comparator.comparing(Course::getNoOfStudents)).orElse(null));
+        //System.out.println(courses.stream().max(Comparator.comparing(Course::getNoOfStudents)).orElse(null));
         // Get the course that has min number of students
-        System.out.println(courses.stream().min(Comparator.comparing(Course::getNoOfStudents)).orElse(null));
+        //System.out.println(courses.stream().min(Comparator.comparing(Course::getNoOfStudents)).orElse(null));
 
-        Predicate<Course> pred = (course) -> course.getReviewScore()>90;
-        System.out.println(courses.stream().filter(pred).findFirst().orElse(null));
+        Predicate<Course> pred = (course) -> course.getReviewScore()>95;
+        //System.out.println(courses.stream().filter(pred).findFirst().orElse(null));
 
+        /*System.out.println(courses.stream()
+                .filter(pred)
+                .mapToInt(Course::getNoOfStudents)
+                .sum()
+        );
+
+        System.out.println(courses.stream()
+                .filter(pred)
+                .mapToInt(Course::getNoOfStudents)
+                .average()
+                .orElse(0)
+        );
+
+        System.out.println(
+                courses.stream()
+                        .filter(pred)
+                        .mapToInt(Course::getNoOfStudents)
+                        .count()
+        );
+
+        System.out.println(
+                courses.stream()
+                        .filter(pred)
+                        .mapToInt(Course::getNoOfStudents)
+                        .max()
+                        .orElse(0)
+        );*/
+
+        Map<String,List<Course>> categoryCourseMap = courses.stream()
+                .collect(Collectors.groupingBy(Course::getCategory));
+        System.out.println(categoryCourseMap);
+
+        /*
+            {   DevOps=[Course{name='Docker', category='DevOps', reviewScore=92, noOfStudents=20000},
+                    Course{name='Kubernetes', category='DevOps', reviewScore=91, noOfStudents=20000}],
+                Cloud=[Course{name='AWS', category='Cloud', reviewScore=92, noOfStudents=21000},
+                    Course{name='Azure', category='Cloud', reviewScore=99, noOfStudents=21000}],
+                Fullstack=[Course{name='Fullstack', category='Fullstack', reviewScore=91, noOfStudents=14000}],
+                Microservices=[Course{name='API', category='Microservices', reviewScore=95, noOfStudents=22000},
+                    Course{name='Microservices', category='Microservices', reviewScore=96, noOfStudents=25000}],
+                Framework=[Course{name='Spring', category='Framework', reviewScore=98, noOfStudents=20000},
+                    Course{name='Spring Boot', category='Framework', reviewScore=95, noOfStudents=18000}]}
+         */
+
+        Map<String,Long> categoryCountMap = courses.stream()
+                .collect(Collectors.groupingBy(Course::getCategory, Collectors.counting()));
+        System.out.println(categoryCountMap);
+
+        // {DevOps=2, Cloud=2, Fullstack=1, Microservices=2, Framework=2}
+
+        Map<String, Optional<Course>> categoryMaxMap =
+            courses.stream()
+                    .collect(Collectors.groupingBy(Course::getCategory,
+                            Collectors.maxBy(Comparator.comparing(Course::getNoOfStudents))));
+        System.out.println(categoryMaxMap);
+
+        /*
+            {DevOps=Optional[Course{name='Docker', category='DevOps', reviewScore=92, noOfStudents=20000}],
+            Cloud=Optional[Course{name='AWS', category='Cloud', reviewScore=92, noOfStudents=21000}],
+            Fullstack=Optional[Course{name='Fullstack', category='Fullstack', reviewScore=91, noOfStudents=14000}],
+            Microservices=Optional[Course{name='Microservices', category='Microservices', reviewScore=96, noOfStudents=25000}],
+            Framework=Optional[Course{name='Spring', category='Framework', reviewScore=98, noOfStudents=20000}]}
+        */
+
+        Map<String,List<String>> categorNameMap =
+                courses.stream()
+                        .collect(Collectors.groupingBy(Course::getCategory,
+                                Collectors.mapping(Course::getName, Collectors.toList())));
+        System.out.println(categorNameMap);
+        /*
+            {DevOps=[Docker, Kubernetes],
+            Cloud=[AWS, Azure],
+            Fullstack=[Fullstack],
+            Microservices=[API, Microservices],
+            Framework=[Spring, Spring Boot]}
+         */
 
     }
 }
