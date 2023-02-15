@@ -1,11 +1,13 @@
 package com.custom;
 
+import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class Course{
     private String name;
@@ -200,9 +202,9 @@ public class FPCustom {
                         .orElse(0)
         );*/
 
-        Map<String,List<Course>> categoryCourseMap = courses.stream()
+        /*Map<String,List<Course>> categoryCourseMap = courses.stream()
                 .collect(Collectors.groupingBy(Course::getCategory));
-        System.out.println(categoryCourseMap);
+        System.out.println(categoryCourseMap);*/
 
         /*
             {   DevOps=[Course{name='Docker', category='DevOps', reviewScore=92, noOfStudents=20000},
@@ -216,17 +218,17 @@ public class FPCustom {
                     Course{name='Spring Boot', category='Framework', reviewScore=95, noOfStudents=18000}]}
          */
 
-        Map<String,Long> categoryCountMap = courses.stream()
+        /*Map<String,Long> categoryCountMap = courses.stream()
                 .collect(Collectors.groupingBy(Course::getCategory, Collectors.counting()));
-        System.out.println(categoryCountMap);
+        System.out.println(categoryCountMap);*/
 
         // {DevOps=2, Cloud=2, Fullstack=1, Microservices=2, Framework=2}
 
-        Map<String, Optional<Course>> categoryMaxMap =
+        /*Map<String, Optional<Course>> categoryMaxMap =
             courses.stream()
                     .collect(Collectors.groupingBy(Course::getCategory,
                             Collectors.maxBy(Comparator.comparing(Course::getNoOfStudents))));
-        System.out.println(categoryMaxMap);
+        System.out.println(categoryMaxMap);*/
 
         /*
             {DevOps=Optional[Course{name='Docker', category='DevOps', reviewScore=92, noOfStudents=20000}],
@@ -236,11 +238,11 @@ public class FPCustom {
             Framework=Optional[Course{name='Spring', category='Framework', reviewScore=98, noOfStudents=20000}]}
         */
 
-        Map<String,List<String>> categorNameMap =
+        /*Map<String,List<String>> categorNameMap =
                 courses.stream()
                         .collect(Collectors.groupingBy(Course::getCategory,
                                 Collectors.mapping(Course::getName, Collectors.toList())));
-        System.out.println(categorNameMap);
+        System.out.println(categorNameMap);*/
         /*
             {DevOps=[Docker, Kubernetes],
             Cloud=[AWS, Azure],
@@ -248,6 +250,7 @@ public class FPCustom {
             Microservices=[API, Microservices],
             Framework=[Spring, Spring Boot]}
          */
+        System.out.println(IntStream.rangeClosed(1,50).mapToObj(BigInteger::valueOf).reduce(BigInteger.ONE, BigInteger::multiply).toString());
 
     }
 }
