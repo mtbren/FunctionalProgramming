@@ -4,7 +4,9 @@ import org.w3c.dom.ls.LSOutput;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Functional04 {
 
@@ -50,5 +52,13 @@ public class Functional04 {
         );
 
 
+        // Higher order Functions. These functions are returning functions as their return values
+        Predicate<Integer> scoreGreaterThan50 = getRightPred(50);
+        Predicate<Integer> scoreGreaterThan60 = getRightPred(60);
+
+
+    }
+    private static Predicate<Integer> getRightPred (int value){
+        return x -> x > value;
     }
 }
